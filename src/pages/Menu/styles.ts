@@ -1,5 +1,16 @@
 import styled from "styled-components";
 import Classe from '../../assets/classBackground.jpeg';
+import Popup from 'reactjs-popup';
+
+export const PopupModal = styled(Popup)`
+	&-content {
+		background: transparent;
+		animation: anvil 0.25s;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+`;
 
 export const Background = styled.div`
     width: 100vw;

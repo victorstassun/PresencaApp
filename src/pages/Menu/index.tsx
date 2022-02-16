@@ -1,5 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Background, SideGlass, OptBox, Options, DateAndHour } from './styles';
+import { Background, SideGlass, OptBox, Options, DateAndHour, PopupModal } from './styles';
+import Cadastro from '../../components/Popup/Cadastrar';
+import { errorfulNotify } from '../../hooks/SystemToasts';
+import api from '../../services/api';
+
+interface IAlunos {
+  matricula: number;
+  nome: string;
+  cpf: number;
+  frequencia: boolean;
+}
+
+interface IChamada {
+  nome: string;
+  presenca: boolean;
+}
+
 
 const Menu: React.FC = () => {
 
@@ -24,6 +40,26 @@ const Menu: React.FC = () => {
         }, 1000);
         return () => clearInterval(timer);
     }, []);
+
+    const [alunos, setAlunos] = useState<IAlunos[]>([]);
+
+    const handleAlunos = async () => {
+        try {
+            await api.get<IAlunos[]>(`alunos`)
+                .then((response => {
+                    setAlunos(response.data); 
+                })).catch(() => errorfulNotify("Não foi possível encontrar os alunos."));
+            } catch(e) {
+        console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        handleAlunos();
+        alunos.map(res => setChamada([{nome: res.nome, presenca: false}]));
+    },[]);
+
+    const [chamada, setChamada] = useState<IChamada[]>([]);
     
     return (
         
@@ -44,7 +80,11 @@ const Menu: React.FC = () => {
                         <a href='#'>Consultar frequência</a>
                     </Options>
                     <Options>
-                        <a href='#'>Cadastrar Alunos</a>
+                        <PopupModal closeOnEscape trigger={<a>Cadastrar</a>} modal>
+                            {(close: any) => (
+                                <Cadastro atualiza={handleAlunos} fechar={close} />
+                            )}
+                        </PopupModal>
                         <a href='#'>Editar cadastro de alunos</a>
                         <a href='#'>Remover Alunos</a>
                     </Options>
