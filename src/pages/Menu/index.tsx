@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Background, SideGlass, OptBox, Options, DateAndHour, PopupModal } from './styles';
 import Cadastro from '../../components/Popup/Cadastrar';
+import Editar from '../../components/Popup/Editar';
 import { errorfulNotify } from '../../hooks/SystemToasts';
 import api from '../../services/api';
 
@@ -85,7 +86,11 @@ const Menu: React.FC = () => {
                                 <Cadastro atualiza={handleAlunos} fechar={close} />
                             )}
                         </PopupModal>
-                        <a href='#'>Editar cadastro de alunos</a>
+                        <PopupModal closeOnEscape trigger={<a>Editar cadastro de alunos</a>} modal>
+                            {(close: any) => (
+                                <Editar atualiza={handleAlunos} fechar={close} matricula={1234} />
+                            )}
+                        </PopupModal>
                         <a href='#'>Remover Alunos</a>
                     </Options>
                 </OptBox>

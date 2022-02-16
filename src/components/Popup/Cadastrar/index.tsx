@@ -23,7 +23,6 @@ let dados = {matricula: 0, nome: '', cpf: 0};
 const Cadastro: React.FC<IPopupVerbaCadastro> = ({ fechar, atualiza }) => {
 
   async function cadastrarAluno() {
-      console.log(dados);
     try {
       await api.post<IAluno>(`alunos`, dados);
       //.then(() => {
